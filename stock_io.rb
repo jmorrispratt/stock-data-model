@@ -56,13 +56,13 @@ end
 # represents a Csv Stock Reader
 class CsvStockReader < StockReader
 
-  @@csv_suffix = '.csv'
-
+  # it should be a class variable but rubymine gives me a warning
+  @csv_suffix = '.csv'
 
   # CsvStockReader initializer
   def initialize(stock_source)
     # checking wether the stock source is a .csv file
-    if csv_stock_source_is_invalid?(stock_source)
+    if CsvStockReader.csv_stock_source_is_invalid?(stock_source)
       raise Exception.new('The stock source must be a .csv file.')
     end
 
@@ -75,11 +75,11 @@ class CsvStockReader < StockReader
     read_from_csv(stock_source)
   end
 
-  private
-    def csv_stock_source_is_invalid?(csv_stock_source)
-      return !csv_stock_source.end_with?(@@csv_suffix)
-    end
+  def CsvStockReader.csv_stock_source_is_invalid?(csv_stock_source)
+    return !csv_stock_source.end_with?(@csv_suffix)
+  end
 
+  private
     def read_from_csv(csv_file_path)
       # reading the whole file for now
       stock_data = CSV.read(csv_file_path)
